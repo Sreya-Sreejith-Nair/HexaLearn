@@ -1,129 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact - HexaLearn</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    main {
-      max-width: 500px;
-      margin: 40px auto;
-      padding: 0 15px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-    button {
-      margin-top: 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px;
-      width: 100%;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #contact-message {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HexaLearn - Contact</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f9f9f9; margin:0; padding:0;}
+  header {
+    background: #00796b; color: white; padding: 1rem; text-align: center;
+  }
+  nav {
+    background: #004d40; padding: 0.5rem; text-align: center;
+  }
+  nav a {
+    color: white; margin: 0 1rem; text-decoration: none; font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  main {
+    max-width: 700px; margin: 2rem auto; background: white; padding: 2rem;
+    border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  main p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+  main a {
+    color: #00796b;
+    text-decoration: none;
+  }
+  main a:hover {
+    text-decoration: underline;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>HexaLearn</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="auth.html">Login/Register</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Your full name" required />
+<header>
+  <h1>HexaLearn</h1>
+  <p>Empowering students with affordable, high-quality education</p>
+</header>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Your email address" required />
+<nav>
+  <a href="courses.html">Courses</a>
+  <a href="contact.html">Contact</a>
+  <a href="comments.html">Comments</a>
+  <a href="#" id="logout">Logout</a>
+</nav>
 
-      <label for="message">Message</label>
-      <textarea id="message" placeholder="Write your message here..." required></textarea>
+<main>
+  <h2>Contact Information</h2>
+  <p><strong>Address:</strong> 123 Learning Lane, Edutown, Country</p>
+  <p><strong>Email:</strong> <a href="mailto:support@hexalearn.com">support@hexalearn.com</a></p>
+  <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+  <p><strong>Office Hours:</strong> Mon - Fri, 9:00 AM - 5:00 PM</p>
+</main>
 
-      <button type="submit">Send Message</button>
-    </form>
+<script>
+  // Redirect if not logged in
+  if(!localStorage.getItem('hexalearnUser')) {
+    window.location.href = 'index.html';
+  }
 
-    <p id="contact-message"></p>
-  </main>
+  document.getElementById('logout').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('hexalearnUser');
+    window.location.href = 'index.html';
+  });
+</script>
 
-  <footer>
-    <p>&copy; 2025 HexaLearn. All rights reserved.</p>
-  </footer>
-
-  <script>
-    const form = document.getElementById('contactForm');
-    const contactMessage = document.getElementById('contact-message');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      if (!name || !email || !message) {
-        contactMessage.style.color = 'red';
-        contactMessage.innerText = 'Please fill in all fields.';
-        return;
-      }
-
-      // Here, normally you'd send data to your backend API or email service
-      // For demonstration, just show success message
-
-      try {
-        // Example: replace with actual POST to backend if available
-        /*
-        const res = await fetch('http://localhost:3000/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, message })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to send');
-        */
-
-        contactMessage.style.color = 'green';
-        contactMessage.innerText = 'Thank you for contacting us! We will get back to you soon.';
-
-        form.reset();
-      } catch (error) {
-        contactMessage.style.color = 'red';
-        contactMessage.innerText = 'Error sending message. Please try again later.';
-      }
-    });
-  </script>
 </body>
 </html>
