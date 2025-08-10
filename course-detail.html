@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course Detail - HexaLearn</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>HexaLearn</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="auth.html">Login/Register</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2 id="course-title">Course Title</h2>
+    <p id="course-description">Loading course details...</p>
+    <p id="course-duration"></p>
+    <a href="courses.html">Back to Courses</a>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 HexaLearn. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    async function loadCourse() {
+      const title = getQueryParam('title');
+      if (!title) {
+        document.getElementById('course-description').innerText = 'No course specified.';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/courses');
+        if (!res.ok) throw new Error('Failed to fetch courses');
+        const courses = await res.json();
+        const course = courses.find(c => c.title === title);
+
+        if (!course) {
+          document.getElementById('course-description').innerText = 'Course not found.';
+          return;
+        }
+
+        document.getElementById('course-title').innerText = course.title;
+        document.getElementById('course-description').innerText = course.description || 'No description available.';
+        document.getElementById('course-duration').innerText = `Duration: ${course.duration}`;
+      } catch (error) {
+        document.getElementById('course-description').innerText = 'Error loading course details.';
+      }
+    }
+
+    loadCourse();
+  </script>
+</body>
+</html>
