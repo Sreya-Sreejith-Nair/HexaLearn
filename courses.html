@@ -1,74 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Courses - HexaLearn</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .course-card {
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 15px;
-      margin: 10px 0;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
-    }
-    .course-card:hover {
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HexaLearn - Courses</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f9f9f9; margin:0; padding:0;}
+  header {
+    background: #00796b; color: white; padding: 1rem; text-align: center;
+  }
+  nav {
+    background: #004d40; padding: 0.5rem; text-align: center;
+  }
+  nav a {
+    color: white; margin: 0 1rem; text-decoration: none; font-weight: bold;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  main {
+    max-width: 900px; margin: 2rem auto; background: white; padding: 1rem 2rem;
+    border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  .course-card {
+    border: 1px solid #ddd; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;
+    cursor: pointer; transition: background-color 0.2s ease;
+  }
+  .course-card:hover {
+    background-color: #e0f2f1;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>HexaLearn</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="auth.html">Login/Register</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <h2>Featured Courses</h2>
-    <div id="courses"></div>
-  </main>
+<header>
+  <h1>HexaLearn</h1>
+  <p>Empowering students with affordable, high-quality education</p>
+</header>
 
-  <footer>
-    <p>&copy; 2025 HexaLearn. All rights reserved.</p>
-  </footer>
+<nav>
+  <a href="courses.html">Courses</a>
+  <a href="contact.html">Contact</a>
+  <a href="comments.html">Comments</a>
+  <a href="#" id="logout">Logout</a>
+</nav>
 
-  <script>
-    async function fetchCourses() {
-      try {
-        const res = await fetch('http://localhost:3000/courses');
-        if (!res.ok) throw new Error('Failed to fetch courses');
-        const courses = await res.json();
-        const container = document.getElementById('courses');
-        container.innerHTML = '';
+<main>
+  <h2>Featured Courses</h2>
+  <div id="courses-list"></div>
+</main>
 
-        courses.forEach(course => {
-          const courseCard = document.createElement('div');
-          courseCard.className = 'course-card';
-          courseCard.innerHTML = `
-            <h3>${course.title}</h3>
-            <p>${course.duration} • Certificate Available</p>
-          `;
-          courseCard.addEventListener('click', () => {
-            // Navigate to course detail page with query param id or title
-            window.location.href = `course-detail.html?title=${encodeURIComponent(course.title)}`;
-          });
-          container.appendChild(courseCard);
-        });
-      } catch (error) {
-        alert('Error loading courses: ' + error.message);
-      }
-    }
+<script>
+  // Redirect if not logged in
+  if(!localStorage.getItem('hexalearnUser')) {
+    window.location.href = 'index.html';
+  }
 
-    fetchCourses();
-  </script>
+  const coursesData = [
+    { title: "Intro to Python", duration: "4 weeks", description: "Learn Python from scratch" },
+    { title: "Web Development Basics", duration: "6 weeks", description: "HTML, CSS & JS fundamentals" },
+    { title: "Data Science 101", duration: "8 weeks", description: "Data analysis and visualization" },
+    { title: "Machine Learning", duration: "10 weeks", description: "Intro to ML concepts" },
+    { title: "Cybersecurity Fundamentals", duration: "5 weeks", description: "Basics of cyber defense" },
+  ];
+
+  const coursesList = document.getElementById('courses-list');
+
+  coursesData.forEach(course => {
+    const div = document.createElement('div');
+    div.className = 'course-card';
+    div.tabIndex = 0;
+    div.innerHTML = `<h3>${course.title}</h3><p>${course.duration}</p>`;
+    div.addEventListener('click', () => {
+      alert(`Course Details:\n\nTitle: ${course.title}\nDuration: ${course.duration}\nDescription: ${course.description}`);
+    });
+    coursesList.appendChild(div);
+  });
+
+  document.getElementById('logout').addEventListener('click', e => {
+    e.preventDefault();
+    localStorage.removeItem('hexalearnUser');
+    window.location.href = 'index.html';
+  });
+</script>
+
 </body>
 </html>
