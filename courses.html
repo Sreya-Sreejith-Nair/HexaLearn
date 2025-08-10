@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Courses - HexaLearn</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .course-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+    .course-card:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HexaLearn</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="auth.html">Login/Register</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Featured Courses</h2>
+    <div id="courses"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 HexaLearn. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function fetchCourses() {
+      try {
+        const res = await fetch('http://localhost:3000/courses');
+        if (!res.ok) throw new Error('Failed to fetch courses');
+        const courses = await res.json();
+        const container = document.getElementById('courses');
+        container.innerHTML = '';
+
+        courses.forEach(course => {
+          const courseCard = document.createElement('div');
+          courseCard.className = 'course-card';
+          courseCard.innerHTML = `
+            <h3>${course.title}</h3>
+            <p>${course.duration} • Certificate Available</p>
+          `;
+          courseCard.addEventListener('click', () => {
+            // Navigate to course detail page with query param id or title
+            window.location.href = `course-detail.html?title=${encodeURIComponent(course.title)}`;
+          });
+          container.appendChild(courseCard);
+        });
+      } catch (error) {
+        alert('Error loading courses: ' + error.message);
+      }
+    }
+
+    fetchCourses();
+  </script>
+</body>
+</html>
